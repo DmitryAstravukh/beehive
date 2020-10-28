@@ -1,9 +1,8 @@
-import { SET_AUTH_USER_DATA } from './../actions_types/auth';
+import { SET_AUTH_USER_DATA } from '../actions_types/auth';
 
 import {AuthActionTypes, setAuthUserData } from '../actions/auth';
-import Api from './../../api/api';
+import Api from '../../api/api';
 import {ThunkAction} from "redux-thunk";
-import {ProfileActionTypes} from "../actions/profile";
 const api = new Api();
 
 //type InicialStateType = typeof inicialState;
