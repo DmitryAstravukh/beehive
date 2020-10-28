@@ -39,36 +39,23 @@ const inicialState: InicialStateType = {
     status: ''
 };
 
+type ThunkType = ThunkAction<Promise<void>, InicialStateType, unknown, ProfileActionTypes>;
 
-export const getUserData = (
-    userId: number
-): ThunkAction<Promise<void>, InicialStateType, unknown, ProfileActionTypes> => async dispatch => {
+export const getUserData = (userId: number): ThunkType => async dispatch => {
     const data = await api.getUserData(userId);
     dispatch(setUserProfileData(data))
-    // api.getUserData(userId)
-    //     .then((data: any) => dispatch(setUserProfileData(data)));
 }
 
 
-export const getUserStatus = (
-    userId: number
-): ThunkAction<Promise<void>, InicialStateType, unknown, ProfileActionTypes> => async dispatch => {
+export const getUserStatus = (userId: number): ThunkType => async dispatch => {
     const response = await api.getUserStatus(userId);
     dispatch(setUserStatus(response.data))
-    //api.getUserStatus(userId).then((response: any) => dispatch(setUserStatus(response.data)))
 }
 
 
-export const updateUserStatus = (
-    status: string
-): ThunkAction<Promise<void>, InicialStateType, unknown, ProfileActionTypes> => async dispatch => {
+export const updateUserStatus = (status: string): ThunkType => async dispatch => {
     const response = await api.updateUserStatus(status);
     if(response.resultCode === 0) dispatch(setUserStatus(response.data))
-
-    // api.updateUserStatus(status)
-    //     .then((response: any) => {
-    //         if(response.resultCode === 0) dispatch(setUserStatus(response.data))
-    //     })
 }
 
 

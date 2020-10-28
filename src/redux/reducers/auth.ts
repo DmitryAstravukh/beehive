@@ -3,6 +3,7 @@ import { SET_AUTH_USER_DATA } from './../actions_types/auth';
 import {AuthActionTypes, setAuthUserData } from '../actions/auth';
 import Api from './../../api/api';
 import {ThunkAction} from "redux-thunk";
+import {ProfileActionTypes} from "../actions/profile";
 const api = new Api();
 
 //type InicialStateType = typeof inicialState;
@@ -21,19 +22,11 @@ const inicialState: InicialStateType = {
     isAuth: false
 }
 
+type ThunkType = ThunkAction<Promise<void>, InicialStateType, unknown, AuthActionTypes>;
 
-export const getAuthUserData = (
-
-): ThunkAction<Promise<void>, InicialStateType, unknown, AuthActionTypes> => async dispatch => {
+export const getAuthUserData = (): ThunkType => async dispatch => {
     const response = await api.getAuthUserData();
     if(response.resultCode === 0) dispatch(setAuthUserData(response.data))
-
-    // api.getAuthUserData()
-    //     .then(response => {
-    //         if(response.resultCode === 0){
-    //             dispatch(setAuthUserData(response.data))
-    //         }
-    //     } )
 }
 
 const authReducer = (state = inicialState, action: AuthActionTypes): InicialStateType => {

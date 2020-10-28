@@ -36,66 +36,32 @@ const inicialState = {
 }
 
 const changePageSize = (state: InicialStateType, pageSize: number): InicialStateType => {
-    return {
-        ...state,
-        users: [],
-        pageSize
-    }
+    return { ...state, users: [], pageSize }
 }
 
 const changePageNumber = (state: InicialStateType): InicialStateType => {
-    return {
-        ...state,
-        currentPage: state.currentPage + 1
-    }
+    return { ...state, currentPage: state.currentPage + 1 }
 }
 
 const clearUsersList = (state: InicialStateType): InicialStateType => {
-    return {
-        ...state,
-        users: []
-    }
+    return { ...state, users: [] }
 }
 
-export const toggleFollowing = (
-    userId: number,
-    followed: boolean
-): ThunkAction<Promise<void>, InicialStateType, unknown, UsersActionTypes> => async dispatch => {
-    dispatch(toggleFollowInProgress(userId, true));
+type ThunkType = ThunkAction<Promise<void>, InicialStateType, unknown, UsersActionTypes>;
 
+export const toggleFollowing = (userId: number, followed: boolean): ThunkType => async dispatch => {
+    dispatch(toggleFollowInProgress(userId, true));
     const data = await api.toggleFollow(userId, followed);
     dispatch(toggleFollowInProgress(userId, false));
     if(data.resultCode === 0) dispatch(toggleFollow(userId))
-
-    //api.toggleFollow(userId, followed)
-        //.then((data: any) => {
-            //dispatch(toggleFollowInProgress(userId, false));
-
-            // if(data.resultCode === 0){
-            //     return dispatch(toggleFollow(userId))
-            // }
-       // }).catch((error: any) => alert(error))
 }
 
-//если async dispatch, пишем Promise<void>
-export const getUsers = (
-    currentPage: number,
-    pageSize: number
-): ThunkAction<Promise<void>, InicialStateType, unknown, UsersActionTypes> => async dispatch => {
-
+export const getUsers = (currentPage: number, pageSize: number): ThunkType => async dispatch => {
     dispatch(toggleLoading(true));
     const data = await api.getUsers(currentPage, pageSize);
     dispatch(toggleLoading(false));
     dispatch(setUsers(data));
-
-    // api.getUsers(currentPage, pageSize)
-    //     .then((data: any) => {
-    //         dispatch(toggleLoading(false));
-    //         dispatch(setUsers(data));
-        //})
 }
-
-
 
 const usersReducer = (state = inicialState, action: UsersActionTypes): InicialStateType => {
     switch (action.type) {
