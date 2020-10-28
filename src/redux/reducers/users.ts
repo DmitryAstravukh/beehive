@@ -11,6 +11,7 @@ import {
 import Api from './../../api/api';
 import {setUsers, toggleLoading, toggleFollow, toggleFollowInProgress, UsersActionTypes} from '../actions/users';
 import {UserItemType} from "../../types/users-types";
+import {ThunkAction} from "redux-thunk";
 const api: any = new Api();
 
 
@@ -56,26 +57,42 @@ const clearUsersList = (state: InicialStateType): InicialStateType => {
     }
 }
 
-export const toggleFollowing = (userId: number, followed: boolean) => (dispatch: any) => {
+export const toggleFollowing = (
+    userId: number,
+    followed: boolean
+): ThunkAction<Promise<void>, InicialStateType, unknown, UsersActionTypes> => async dispatch => {
     dispatch(toggleFollowInProgress(userId, true));
 
-    api.toggleFollow(userId, followed)
-        .then((data: any) => {
-            dispatch(toggleFollowInProgress(userId, false));
+    const data = await api.toggleFollow(userId, followed);
+    dispatch(toggleFollowInProgress(userId, false));
+    if(data.resultCode === 0) dispatch(toggleFollow(userId))
 
-            if(data.resultCode === 0){
-                return dispatch(toggleFollow(userId))
-            }
-        }).catch((error: any) => alert(error))
+    //api.toggleFollow(userId, followed)
+        //.then((data: any) => {
+            //dispatch(toggleFollowInProgress(userId, false));
+
+            // if(data.resultCode === 0){
+            //     return dispatch(toggleFollow(userId))
+            // }
+       // }).catch((error: any) => alert(error))
 }
 
-export const getUsers = (currentPage: number, pageSize: number) => (dispatch: any) => {
+//если async dispatch, пишем Promise<void>
+export const getUsers = (
+    currentPage: number,
+    pageSize: number
+): ThunkAction<Promise<void>, InicialStateType, unknown, UsersActionTypes> => async dispatch => {
+
     dispatch(toggleLoading(true));
-    api.getUsers(currentPage, pageSize)
-        .then((data: any) => {
-            dispatch(toggleLoading(false));
-            dispatch(setUsers(data));
-        })
+    const data = await api.getUsers(currentPage, pageSize);
+    dispatch(toggleLoading(false));
+    dispatch(setUsers(data));
+
+    // api.getUsers(currentPage, pageSize)
+    //     .then((data: any) => {
+    //         dispatch(toggleLoading(false));
+    //         dispatch(setUsers(data));
+        //})
 }
 
 

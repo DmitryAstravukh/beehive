@@ -3,8 +3,8 @@ import { SET_USER_PROFILE_DATA, SET_USER_STATUS } from './../actions_types/profi
 import Api from './../../api/api';
 import {ProfileActionTypes, setUserProfileData, setUserStatus} from '../actions/profile';
 import {UserDataType} from "../../types/profile-types";
+import {ThunkAction} from "redux-thunk";
 const api: any = new Api();
-
 
 
 type InicialStateType = {
@@ -39,20 +39,36 @@ const inicialState: InicialStateType = {
     status: ''
 };
 
-export const getUserData = (userId: number) => (dispatch: any) => {
-    api.getUserData(userId)
-        .then((data: any) => dispatch(setUserProfileData(data)));
+
+export const getUserData = (
+    userId: number
+): ThunkAction<Promise<void>, InicialStateType, unknown, ProfileActionTypes> => async dispatch => {
+    const data = await api.getUserData(userId);
+    dispatch(setUserProfileData(data))
+    // api.getUserData(userId)
+    //     .then((data: any) => dispatch(setUserProfileData(data)));
 }
 
-export const getUserStatus = (userId: number) => (dispatch: any) => {
-    api.getUserStatus(userId).then((response: any) => dispatch(setUserStatus(response.data)))
+
+export const getUserStatus = (
+    userId: number
+): ThunkAction<Promise<void>, InicialStateType, unknown, ProfileActionTypes> => async dispatch => {
+    const response = await api.getUserStatus(userId);
+    dispatch(setUserStatus(response.data))
+    //api.getUserStatus(userId).then((response: any) => dispatch(setUserStatus(response.data)))
 }
 
-export const updateUserStatus = (status: string) => (dispatch: any) => {
-    api.updateUserStatus(status)
-        .then((response: any) => {
-            if(response.resultCode === 0) dispatch(setUserStatus(response.data))
-        })
+
+export const updateUserStatus = (
+    status: string
+): ThunkAction<Promise<void>, InicialStateType, unknown, ProfileActionTypes> => async dispatch => {
+    const response = await api.updateUserStatus(status);
+    if(response.resultCode === 0) dispatch(setUserStatus(response.data))
+
+    // api.updateUserStatus(status)
+    //     .then((response: any) => {
+    //         if(response.resultCode === 0) dispatch(setUserStatus(response.data))
+    //     })
 }
 
 
