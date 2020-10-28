@@ -18,9 +18,9 @@ export const getUsers = (): GetUsersType => {
 
 type SetUsersType = {
     type: typeof SET_USERS,
-    users: Array<UserType>
+    users: UserType
 }
-export const setUsers = (users: Array<UserType>): SetUsersType => {
+export const setUsers = (users: UserType): SetUsersType => {
     return {
         type: SET_USERS,
         users
@@ -96,3 +96,7 @@ export const clearUsersList = (): ClearUsersListType => {
         type: CLEAR_USERS_LIST
     }
 }
+
+export type UsersActionTypes = GetUsersType | SetUsersType | ChangePageSizeType
+                                | ChangePageNumberType | ToggleLoadingType | ToggleFollowType
+                                | ToggleFollowInProgressType | ClearUsersListType;

@@ -18,3 +18,5 @@ export const setAuthUserData = (data: dataType): SetAuthUserDataActionType => {
         data
     }
 }
+
+export type AuthActionTypes = SetAuthUserDataActionType;

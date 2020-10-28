@@ -1,7 +1,7 @@
 import { SET_USER_PROFILE_DATA, SET_USER_STATUS } from './../actions_types/profile';
 
 import Api from './../../api/api';
-import { setUserProfileData, setUserStatus } from '../actions/profile';
+import {ProfileActionTypes, setUserProfileData, setUserStatus} from '../actions/profile';
 import {UserDataType} from "../../types/profile-types";
 const api: any = new Api();
 
@@ -56,7 +56,7 @@ export const updateUserStatus = (status: string) => (dispatch: any) => {
 }
 
 
-const profileReducer = (state = inicialState, action: any): InicialStateType => {
+const profileReducer = (state = inicialState, action: ProfileActionTypes): InicialStateType => {
     switch (action.type) {
         case SET_USER_PROFILE_DATA:
             return {

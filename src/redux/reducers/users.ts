@@ -9,13 +9,13 @@ import {
     CLEAR_USERS_LIST
 } from './../actions_types/users';
 import Api from './../../api/api';
-import { setUsers, toggleLoading, toggleFollow, toggleFollowInProgress } from '../actions/users';
-import {UserType} from "../../types/users-types";
+import {setUsers, toggleLoading, toggleFollow, toggleFollowInProgress, UsersActionTypes} from '../actions/users';
+import {UserItemType} from "../../types/users-types";
 const api: any = new Api();
 
 
 type InicialStateType = {
-    users: Array<UserType>,
+    users: Array<UserItemType>,
     currentPage: number,
     pageSize: number,
     pageSizeSteps: Array<number>,
@@ -80,7 +80,7 @@ export const getUsers = (currentPage: number, pageSize: number) => (dispatch: an
 
 
 
-const usersReducer = (state = inicialState, action: any): InicialStateType => {
+const usersReducer = (state = inicialState, action: UsersActionTypes): InicialStateType => {
     switch (action.type) {
         case SET_USERS:
             return {
@@ -107,7 +107,7 @@ const usersReducer = (state = inicialState, action: any): InicialStateType => {
         case TOGGLE_FOLLOW:
             return {
                 ...state,
-                users: state.users.map((user: UserType) => {
+                users: state.users.map((user: UserItemType) => {
                     if(user.id === action.userId) {
                         return {
                             ...user,

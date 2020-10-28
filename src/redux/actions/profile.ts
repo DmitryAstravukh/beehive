@@ -24,3 +24,5 @@ export const setUserStatus = (status: string): SetUserStatusType => {
         status
     }
 }
+
+export type ProfileActionTypes = SetUserProfileDataType | SetUserStatusType;

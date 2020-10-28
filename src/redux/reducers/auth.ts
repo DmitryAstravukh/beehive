@@ -1,6 +1,6 @@
 import { SET_AUTH_USER_DATA } from './../actions_types/auth';
 
-import { setAuthUserData } from '../actions/auth';
+import {AuthActionTypes, setAuthUserData } from '../actions/auth';
 import Api from './../../api/api';
 const api = new Api();
 
@@ -30,7 +30,7 @@ export const getAuthUserData = () => (dispatch: any) => {
         } )
 }
 
-const authReducer = (state = inicialState, action: any): InicialStateType => {
+const authReducer = (state = inicialState, action: AuthActionTypes): InicialStateType => {
     switch (action.type){
         case SET_AUTH_USER_DATA:
             return {
