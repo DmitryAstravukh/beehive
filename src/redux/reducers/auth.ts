@@ -1,8 +1,7 @@
-import { SET_AUTH_USER_DATA } from '../actions_types/auth';
-
-import {AuthActionTypes, setAuthUserData } from '../actions/auth';
-import Api from '../../api/api';
+import { setAuthUserData } from '../actions/auth';
+import Api, { ResultCodesEnum } from '../../api/api';
 import {ThunkAction} from "redux-thunk";
+import {AuthActionTypes} from "../actions";
 const api = new Api();
 
 //type InicialStateType = typeof inicialState;
@@ -24,15 +23,15 @@ const inicialState: InicialStateType = {
 type ThunkType = ThunkAction<Promise<void>, InicialStateType, unknown, AuthActionTypes>;
 
 export const getAuthUserData = (): ThunkType => async dispatch => {
-    const response = await api.getAuthUserData();
-    if(response.resultCode === 0) dispatch(setAuthUserData(response.data))
+    const r = await api.getAuthUserData();
+    if(r.resultCode === ResultCodesEnum.Success) dispatch(setAuthUserData(r.data))
 }
 
 const authReducer = (state = inicialState, action: AuthActionTypes): InicialStateType => {
     switch (action.type){
-        case SET_AUTH_USER_DATA:
+        case 'auth/SET_AUTH_USER_DATA':
             return {
-                ...action.data,
+                ...action.userData,
                 isAuth: true
             }
 

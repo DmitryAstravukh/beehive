@@ -1,102 +1,54 @@
-import {
-    GET_USERS,
-    SET_USERS,
-    CHANGE_PAGE_SIZE,
-    CHANGE_PAGE_NUMBER,
-    TOGGLE_LOADING,
-    TOGGLE_FOLLOW,
-    TOGGLE_FOLLOW_IN_PROGRESS,
-    CLEAR_USERS_LIST
-} from './../actions_types/users';
 import {UserType} from "../../types/users-types";
 
-type GetUsersType = { type: typeof GET_USERS }
-export const getUsers = (): GetUsersType => {
-    return { type: GET_USERS }
+
+export const getUsers = () => {
+    return { type: 'users/GET_USERS' } as const
 }
 
-
-type SetUsersType = {
-    type: typeof SET_USERS,
-    users: UserType
-}
-export const setUsers = (users: UserType): SetUsersType => {
+export const setUsers = (users: UserType) => {
     return {
-        type: SET_USERS,
+        type: 'users/SET_USERS',
         users
-    }
+    } as const
 }
 
-
-type ChangePageSizeType = {
-    type: typeof CHANGE_PAGE_SIZE,
-    pageSize: number
-}
-export const changePageSize = (pageSize: number): ChangePageSizeType => {
+export const changePageSize = (pageSize: number) => {
     return {
-        type: CHANGE_PAGE_SIZE,
+        type: 'users/CHANGE_PAGE_SIZE',
         pageSize
-    }
+    } as const
 }
 
-
-type ChangePageNumberType = {
-    type: typeof CHANGE_PAGE_NUMBER
-}
-export const changePageNumber = (): ChangePageNumberType => {
+export const changePageNumber = () => {
     return {
-        type: CHANGE_PAGE_NUMBER
-    }
+        type: 'users/CHANGE_PAGE_NUMBER'
+    } as const
 }
 
-
-type ToggleLoadingType = {
-    type: typeof TOGGLE_LOADING,
-    isLoading: boolean
-}
-export const toggleLoading = (isLoading: boolean): ToggleLoadingType => {
+export const toggleLoading = (isLoading: boolean) => {
     return {
-        type: TOGGLE_LOADING,
+        type: 'users/TOGGLE_LOADING',
         isLoading
-    }
+    } as const
 }
 
-
-type ToggleFollowType = {
-    type: typeof TOGGLE_FOLLOW,
-    userId: number
-}
-export const toggleFollow = (userId: number): ToggleFollowType => {
+export const toggleFollow = (userId: number) => {
     return {
-        type: TOGGLE_FOLLOW,
+        type: 'users/TOGGLE_FOLLOW',
         userId
-    }
+    } as const
 }
 
-
-type ToggleFollowInProgressType = {
-    type: typeof  TOGGLE_FOLLOW_IN_PROGRESS,
-    userId: number,
-    isFetching: boolean
-}
-export const toggleFollowInProgress = (userId: number, isFetching: boolean): ToggleFollowInProgressType => {
+export const toggleFollowInProgress = (userId: number, isFetching: boolean) => {
     return {
-        type: TOGGLE_FOLLOW_IN_PROGRESS,
+        type: 'users/TOGGLE_FOLLOW_IN_PROGRESS',
         userId,
         isFetching
-    }
+    } as const
 }
 
-
-type ClearUsersListType = {
-    type: typeof CLEAR_USERS_LIST
-}
-export const clearUsersList = (): ClearUsersListType => {
+export const clearUsersList = () => {
     return {
-        type: CLEAR_USERS_LIST
-    }
+        type: 'users/CLEAR_USERS_LIST'
+    } as const
 }
-
-export type UsersActionTypes = GetUsersType | SetUsersType | ChangePageSizeType
-                                | ChangePageNumberType | ToggleLoadingType | ToggleFollowType
-                                | ToggleFollowInProgressType | ClearUsersListType;

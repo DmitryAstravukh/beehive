@@ -1,9 +1,8 @@
-import { SET_USER_PROFILE_DATA, SET_USER_STATUS } from './../actions_types/profile';
-
-import Api from './../../api/api';
-import {ProfileActionTypes, setUserProfileData, setUserStatus} from '../actions/profile';
+import Api, {ResultCodesEnum} from '../../api/api';
+import {setUserProfileData, setUserStatus} from '../actions/profile';
 import {UserDataType} from "../../types/profile-types";
 import {ThunkAction} from "redux-thunk";
+import {ProfileActionTypes} from "../actions";
 const api: any = new Api();
 
 
@@ -42,8 +41,8 @@ const inicialState: InicialStateType = {
 type ThunkType = ThunkAction<Promise<void>, InicialStateType, unknown, ProfileActionTypes>;
 
 export const getUserData = (userId: number): ThunkType => async dispatch => {
-    const data = await api.getUserData(userId);
-    dispatch(setUserProfileData(data))
+    const userData = await api.getUserData(userId);
+    dispatch(setUserProfileData(userData))
 }
 
 
@@ -54,14 +53,14 @@ export const getUserStatus = (userId: number): ThunkType => async dispatch => {
 
 
 export const updateUserStatus = (status: string): ThunkType => async dispatch => {
-    const response = await api.updateUserStatus(status);
-    if(response.resultCode === 0) dispatch(setUserStatus(response.data))
+    const updatedStatus = await api.updateUserStatus(status);
+    if(updatedStatus.resultCode === ResultCodesEnum.Success) dispatch(setUserStatus(updatedStatus.data))
 }
 
 
 const profileReducer = (state = inicialState, action: ProfileActionTypes): InicialStateType => {
     switch (action.type) {
-        case SET_USER_PROFILE_DATA:
+        case 'profile/SET_USER_PROFILE_DATA':
             return {
                 ...state,
                 userData: {
@@ -70,7 +69,7 @@ const profileReducer = (state = inicialState, action: ProfileActionTypes): Inici
                 isLoadedUserData: true
             }
 
-        case SET_USER_STATUS:
+        case 'profile/SET_USER_STATUS':
             return {
                 ...state,
                 status: action.status

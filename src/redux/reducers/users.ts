@@ -1,17 +1,8 @@
-import {
-    GET_USERS,
-    SET_USERS,
-    CHANGE_PAGE_SIZE,
-    CHANGE_PAGE_NUMBER,
-    TOGGLE_LOADING,
-    TOGGLE_FOLLOW,
-    TOGGLE_FOLLOW_IN_PROGRESS,
-    CLEAR_USERS_LIST
-} from './../actions_types/users';
-import Api from './../../api/api';
-import {setUsers, toggleLoading, toggleFollow, toggleFollowInProgress, UsersActionTypes} from '../actions/users';
+import Api, {ResultCodesEnum} from '../../api/api';
+import {setUsers, toggleLoading, toggleFollow, toggleFollowInProgress} from '../actions/users';
 import {UserItemType} from "../../types/users-types";
 import {ThunkAction} from "redux-thunk";
+import {UsersActionTypes} from "../actions";
 const api: any = new Api();
 
 
@@ -53,19 +44,19 @@ export const toggleFollowing = (userId: number, followed: boolean): ThunkType =>
     dispatch(toggleFollowInProgress(userId, true));
     const data = await api.toggleFollow(userId, followed);
     dispatch(toggleFollowInProgress(userId, false));
-    if(data.resultCode === 0) dispatch(toggleFollow(userId))
+    if(data.resultCode === ResultCodesEnum.Success) dispatch(toggleFollow(userId))
 }
 
 export const getUsers = (currentPage: number, pageSize: number): ThunkType => async dispatch => {
     dispatch(toggleLoading(true));
-    const data = await api.getUsers(currentPage, pageSize);
+    const users = await api.getUsers(currentPage, pageSize);
     dispatch(toggleLoading(false));
-    dispatch(setUsers(data));
+    dispatch(setUsers(users));
 }
 
 const usersReducer = (state = inicialState, action: UsersActionTypes): InicialStateType => {
     switch (action.type) {
-        case SET_USERS:
+        case 'users/SET_USERS':
             return {
                 ...state,
                 users: [
@@ -75,19 +66,13 @@ const usersReducer = (state = inicialState, action: UsersActionTypes): InicialSt
                 totalCount: action.users.totalCount
             }
 
-        case CHANGE_PAGE_SIZE:
-            return changePageSize(state, action.pageSize);
+        case 'users/CHANGE_PAGE_SIZE': return changePageSize(state, action.pageSize);
 
-        case CHANGE_PAGE_NUMBER:
-            return changePageNumber(state);
+        case 'users/CHANGE_PAGE_NUMBER': return changePageNumber(state);
 
-        case TOGGLE_LOADING:
-            return {
-                ...state,
-                isLoading: action.isLoading
-            }
+        case 'users/TOGGLE_LOADING': return { ...state, isLoading: action.isLoading }
 
-        case TOGGLE_FOLLOW:
+        case 'users/TOGGLE_FOLLOW':
             return {
                 ...state,
                 users: state.users.map((user: UserItemType) => {
@@ -102,7 +87,7 @@ const usersReducer = (state = inicialState, action: UsersActionTypes): InicialSt
             }
 
 
-        case TOGGLE_FOLLOW_IN_PROGRESS:
+        case 'users/TOGGLE_FOLLOW_IN_PROGRESS':
             return {
                 ...state,
                 followInProgress: action.isFetching ? [...state.followInProgress, action.userId]
@@ -110,11 +95,9 @@ const usersReducer = (state = inicialState, action: UsersActionTypes): InicialSt
 
             }
 
-        case CLEAR_USERS_LIST:
-            return clearUsersList(state);
+        case 'users/CLEAR_USERS_LIST': return clearUsersList(state);
 
-        default:
-            return state;
+        default: return state;
     }
 }
 

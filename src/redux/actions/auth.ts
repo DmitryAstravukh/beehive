@@ -1,22 +1,8 @@
-import { SET_AUTH_USER_DATA } from './../actions_types/auth';
+import { UserDataTypeAuth } from '../../types/auth-types';
 
-
-type dataType = {
-    id: number,
-    email: string,
-    login: string
-}
-
-type SetAuthUserDataActionType = {
-    type: typeof SET_AUTH_USER_DATA,
-    data: dataType
-}
-
-export const setAuthUserData = (data: dataType): SetAuthUserDataActionType => {
+export const setAuthUserData = (userData: UserDataTypeAuth) => {
     return {
-        type: SET_AUTH_USER_DATA,
-        data
-    }
+        type: 'auth/SET_AUTH_USER_DATA',
+        userData
+    } as const
 }
-
-export type AuthActionTypes = SetAuthUserDataActionType;
